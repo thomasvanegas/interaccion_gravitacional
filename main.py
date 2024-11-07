@@ -17,6 +17,20 @@ calcular la energia potencial gravitacional (U) del sistema m - m'.
 
 """
 
+"""
+
+Definiciones y conceptos para el desarrollo del script
+
+Fuerza de gravitacion: F = (-G * m1 * m2) / r^2
+
+Potencial gravitacional: V = (-G * m1) / r
+
+Energia potencial gravitacional: U = (-G * m1 * m2) / r
+
+Campo gravitacional: g = F / m2 = (-G * m1) / r^2
+
+"""
+
 # Importacion de librerias, modulos y clases
 import numpy as np
 import pandas as pd
