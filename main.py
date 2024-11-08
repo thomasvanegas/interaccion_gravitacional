@@ -51,7 +51,7 @@ def calcular_potencial_gravitacional(m, punto_o: 'Punto2D', punto: 'Punto2D'):
 def calcular_energia_potencial_gravitacional(m, m_prima, punto_o: Punto2D, punto: Punto2D):
     distancia = punto.calcular_distancia(punto_o)
     if distancia == 0:
-        raise ValueError("La distancia entre las masas no puede ser cero (están en la misma posición).")
+        raise ValueError("La distancia entre las masas no puede ser cero (están en la misma posición). => NO HAY ENERGIA POTENCIAL GRAVITACIONAL (sistema de referencia)")
     return (-G * m * m_prima) / distancia
 
 # Definicion del tamaño de la malla (100 x 100 puntos)
@@ -66,7 +66,7 @@ y_values = np.linspace(-100, 100, 100)
 X, Y = np.meshgrid(x_values, y_values)
 
 # Instanciamiento de la coordenada de la masa "m" fija
-punto_o = Punto2D(0, 0)
+punto_o = Punto2D(100, 100)
 
 # Calcular el potencial gravitacional en cada punto de la malla
 V = np.zeros((100, 100))
@@ -84,13 +84,13 @@ surf = ax.plot_surface(X, Y, V, cmap='viridis', edgecolor='none')
 ax.set_xlabel('x (m)')
 ax.set_ylabel('y (m)')
 ax.set_zlabel('Potencial Gravitacional (J/kg)')
-ax.set_title('Potencial Gravitacional en 3D generado por una masa en el origen')
+ax.set_title('Potencial Gravitacional en 3D generado por una masa m en un punto O(X,Y)')
 fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5, label='Potencial Gravitacional (J/kg)')
 
 plt.show()
 
 # Calcular la energía potencial gravitacional entre el sistema m-m'
-# Coordenadas de la masa m' en un punto específico (por ejemplo, x'=1e7, y'=2e7 metros)
+# Coordenadas de la masa m' en un punto específico
 punto_m_prima = Punto2D(100, 100)
 
 # Calcular la energía potencial gravitacional entre m y m'
