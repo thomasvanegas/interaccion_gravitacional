@@ -1,23 +1,25 @@
+# Importacion de librerias, modulos y clases
+import numpy as np
+
 class Punto2D:
     # Metodo constructor de la clase Punto2D
-    def __init__(self, xi, yi):
-        self.xi = xi
-        self.yi = yi
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
     # Metodo getter y setter para la coordenada x
-    def get_xi(self):
-        return self.xi
+    def get_x(self):
+        return self.x
     
-    def set_xi(self, xi):
-        self.xi = xi
+    def set_x(self, x):
+        self.x = x
 
     # Metodo getter y setter para la coordenada y
-    def get_yi(self):
-        return self.yi
+    def get_y(self):
+        return self.y
     
-    def set_yi(self, yi):
-        self.yi = yi
+    def set_y(self, y):
+        self.y = y
 
-    # Metodo para calcular la distancia entre dos puntos
-    def calcular_distancia(self, punto: 'Punto2D'):
-        return np.sqrt((punto.get_xi() - self.xi)**2 + (punto.get_yi() - self.yi)**2)
+    def calcular_distancia(self, otro_punto):
+        return np.sqrt((self.x - otro_punto.x)**2 + (self.y - otro_punto.y)**2)    

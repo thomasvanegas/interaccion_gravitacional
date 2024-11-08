@@ -1,9 +1,9 @@
 
 """
-@author: Thomas Camilo Vanegas Acevedo
+@author: Thomas Camilo Vanegas Acevedo & Nikol Saray Correa Romero
 @date: 2024-NOV-08
 @description: Este script calcula el potencial gravitacional y la energia potencial gravitacional de un sistema para dos masas.
-ID: 000287437
+ID: 000287437 - 000551254
 
 Un cuerpo de masa m se encuentra ubicado en el plano en la coordenada O(Xi, Yi).
 
@@ -18,7 +18,6 @@ calcular la energia potencial gravitacional (U) del sistema m - m'.
 """
 
 """
-
 Definiciones y conceptos para el desarrollo del script
 
 Fuerza de gravitacion: F = (-G * m1 * m2) / r^2
@@ -28,7 +27,6 @@ Potencial gravitacional: V = (-G * m1) / r
 Energia potencial gravitacional: U = (-G * m1 * m2) / r
 
 Campo gravitacional: g = F / m2 = (-G * m1) / r^2
-
 """
 
 # Importacion de librerias, modulos y clases
@@ -36,54 +34,66 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from Punto2D import Punto2D
 
 # Definicion de constantes y variables globales
 G = 6.67430e-11 # Constante de gravitacion universal
 m = 5.972e24 # Masa de la Tierra en kg
-Rt = 6371e3 # Radio de la Tierra en metros
+m_prima = 1000   # Masa de la partícula m' en kg
 
-# Definicion de la coordenada de la masa "m" fija
-xi = 0
-yi = 0
+# Definicion de funciones para calcular el potencial gravitacional y la energia potencial gravitacional
+def calcular_potencial_gravitacional(m, punto_o: 'Punto2D', punto: 'Punto2D'):
+    distancia = punto.calcular_distancia(punto_o)
+    if distancia == 0:
+        return np.inf  # Evitar división por cero en el punto de la masa
+    return (-G * m) / distancia
+
+def calcular_energia_potencial_gravitacional(m, m_prima, punto_o: Punto2D, punto: Punto2D):
+    distancia = punto.calcular_distancia(punto_o)
+    if distancia == 0:
+        raise ValueError("La distancia entre las masas no puede ser cero (están en la misma posición).")
+    return (-G * m * m_prima) / distancia
 
 # Definicion del tamaño de la malla (100 x 100 puntos)
 # Referencia: https://numpy.org/devdocs/reference/generated/numpy.linspace.html
-tamano_malla = 100
+# Generar una malla de 100x100 puntos alrededor del origen (0, 0)
+x_values = np.linspace(-100, 100, 100)
+y_values = np.linspace(-100, 100, 100)
 
-x = np.linspace(-100, 100, tamano_malla)
-y = np.linspace(-100, 100, tamano_malla)
 
 # Creacion de la malla de puntos
 # Referencia: https://stackoverflow.com/questions/36013063/what-is-the-purpose-of-meshgrid-in-numpy
-X, Y = np.meshgrid(x, y)
+X, Y = np.meshgrid(x_values, y_values)
 
-# Calcular la distancia entre la masa "m" fija y cada punto de la malla -> distancia entre dos puntos usando geometria analitica
-distancia = np.sqrt((X - xi)**2 + (Y - yi)**2)
+# Definicion de la coordenada de la masa "m" fija
+punto_o = Punto2D(0, 0)
 
-# Evitar la division por cero
-distancia[distancia == 0] = 1e-10
+# Calcular el potencial gravitacional en cada punto de la malla
+V = np.zeros((100, 100))
+for i in range(100):
+    for j in range(100):
+        punto = Punto2D(X[i, j], Y[i, j])
+        V[i, j] = calcular_potencial_gravitacional(m, punto_o, punto)
 
-# Calcular el potencial gravitacional (V) en cada punto de la malla
-V = -G * m / distancia
+# Graficar el potencial gravitacional en 3D
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
 
-# Graficar el potencial gravitacional (V)
-fig, ax = plt.subplots(figsize=(8, 6))
-cp = ax.contourf(X, Y, V, levels=50, cmap='inferno')
-plt.colorbar(cp, label='Potencial Gravitacional (V)')
-plt.title("Potencial Gravitacional V(x, y)")
-plt.xlabel("X")
-plt.ylabel("Y")
+# Crear la gráfica de superficie
+surf = ax.plot_surface(X, Y, V, cmap='viridis', edgecolor='none')
+ax.set_xlabel('x (m)')
+ax.set_ylabel('y (m)')
+ax.set_zlabel('Potencial Gravitacional (J/kg)')
+ax.set_title('Potencial Gravitacional en 3D generado por una masa en el origen')
+fig.colorbar(surf, ax=ax, shrink=0.5, aspect=5, label='Potencial Gravitacional (J/kg)')
+
 plt.show()
 
-# Posicion y masa de una masa m'
-m_prima = 7.348e22 # Masa de la Luna en kg
-x_prima = 20
-y_prima = 20
+# Calcular la energía potencial gravitacional entre el sistema m-m'
+# Coordenadas de la masa m' en un punto específico (por ejemplo, x'=1e7, y'=2e7 metros)
+punto_m_prima = Punto2D(100, 100)
 
-# Calcular la distancia entre la masa fija Mt y la masa m'
-distancia_m_prima = np.sqrt((x_prima - xi)**2 + (y_prima - yi)**2)
+# Calcular la energía potencial gravitacional entre m y m'
+U = calcular_energia_potencial_gravitacional(m, m_prima, punto_o, punto_m_prima)
 
-# Calcular la energia potencial gravitacional (U) de la sistema m - m'
-U = (-G * m * m_prima) / distancia_m_prima
-
-print(f"La energia potencial gravitacional del sistema m - m' es: {U} Joules")
+print(f"Energía Potencial Gravitacional entre m y m' en el punto ({punto_m_prima.x}, {punto_m_prima.y}): {U} J")
