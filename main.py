@@ -1,9 +1,9 @@
 
 """
-@author: Thomas Camilo Vanegas Acevedo & Nikol Saray Correa Romero
+@author: Thomas Camilo Vanegas Acevedo
 @date: 2024-NOV-08
 @description: Este script calcula el potencial gravitacional y la energia potencial gravitacional de un sistema para dos masas.
-ID: 000287437 - 000551254
+ID: 000287437
 
 Un cuerpo de masa m se encuentra ubicado en el plano en la coordenada O(Xi, Yi).
 
