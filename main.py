@@ -65,7 +65,7 @@ y_values = np.linspace(-100, 100, 100)
 # Referencia: https://stackoverflow.com/questions/36013063/what-is-the-purpose-of-meshgrid-in-numpy
 X, Y = np.meshgrid(x_values, y_values)
 
-# Definicion de la coordenada de la masa "m" fija
+# Instanciamiento de la coordenada de la masa "m" fija
 punto_o = Punto2D(0, 0)
 
 # Calcular el potencial gravitacional en cada punto de la malla
@@ -96,4 +96,4 @@ punto_m_prima = Punto2D(100, 100)
 # Calcular la energía potencial gravitacional entre m y m'
 U = calcular_energia_potencial_gravitacional(m, m_prima, punto_o, punto_m_prima)
 
-print(f"Energía Potencial Gravitacional entre m y m' en el punto ({punto_m_prima.x}, {punto_m_prima.y}): {U} J")
+print(f"Energía Potencial Gravitacional entre m y m' en el punto ({punto_m_prima.x}, {punto_m_prima.y}): {U:.2e} J")
